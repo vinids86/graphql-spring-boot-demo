@@ -28,6 +28,6 @@ public class GraphQLConfiguration {
 
 	@Bean
 	Mutation mutation() {
-		return new Mutation();
+		return new Mutation(petRepository);
 	}
 }

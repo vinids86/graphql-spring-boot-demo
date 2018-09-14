@@ -4,19 +4,29 @@ schema {
 }
 
 type Query {
-  findPetById: Pet
+  findPetById(id: ID!): Pet
 }
 
 type Mutation {
-  createPet: Pet
+  createPet(pet: PetInput!): Pet
+  updatePet(id: ID!, pet: PetInput!): Pet
+  deletePet(id: ID!): Pet
 }
 
 type Pet {
   id: ID!
-  category: PetCategory!
+  category: String!
   name: String!
   photoUrls: [String]!
-  tags: [Tag]!
+  tags: [String]!
+  status: Status!
+}
+
+input PetInput {
+  category: String!
+  name: String!
+  photoUrls: [String]!
+  tags: [String]!
   status: Status!
 }
 
@@ -24,14 +34,4 @@ enum Status {
   AVAILABLE
   PENDING
   SOLD
-}
-
-type Tag {
-  id: ID!
-  name: String!
-}
-
-type PetCategory {
-  id: ID!
-  name: String!
 }
