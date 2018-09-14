@@ -1,0 +1,37 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type Query {
+  findPetById: Pet
+}
+
+type Mutation {
+  createPet: Pet
+}
+
+type Pet {
+  id: ID!
+  category: PetCategory!
+  name: String!
+  photoUrls: [String]!
+  tags: [Tag]!
+  status: Status!
+}
+
+enum Status {
+  AVAILABLE
+  PENDING
+  SOLD
+}
+
+type Tag {
+  id: ID!
+  name: String!
+}
+
+type PetCategory {
+  id: ID!
+  name: String!
+}
