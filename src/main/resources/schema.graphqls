@@ -5,12 +5,40 @@ schema {
 
 type Query {
   findPetById(id: ID!): Pet
+  findOrderById(id: ID!): Order
 }
 
 type Mutation {
   createPet(pet: PetInput!): Pet
   updatePet(id: ID!, pet: PetInput!): Pet
   deletePet(id: ID!): Pet
+
+  createOrder(order: OrderInput!): Order
+}
+
+type Order {
+  id: ID!
+  pet: Pet!
+  quantity: Int!
+  shipDate: DateTime
+  status: OrderStatus!
+  complete: Boolean!
+}
+
+input OrderInput {
+  petId: String!
+  quantity: Int!
+  shipDate: DateTime
+  status: OrderStatus!
+  complete: Boolean!
+}
+
+scalar DateTime
+
+enum OrderStatus {
+    PLACED,
+    APPROVED,
+    DELIVERED
 }
 
 type Pet {
@@ -19,7 +47,7 @@ type Pet {
   name: String!
   photoUrls: [String]!
   tags: [String]!
-  status: Status!
+  status: PetStatus!
 }
 
 input PetInput {
@@ -27,10 +55,10 @@ input PetInput {
   name: String!
   photoUrls: [String]!
   tags: [String]!
-  status: Status!
+  status: PetStatus!
 }
 
-enum Status {
+enum PetStatus {
   AVAILABLE
   PENDING
   SOLD

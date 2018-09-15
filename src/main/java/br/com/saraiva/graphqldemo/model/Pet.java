@@ -12,18 +12,18 @@ public class Pet {
 	private String name;
 	private List<String> photoUrls;
 	private List<String> tags;
-	private Status status;
+	private PetStatus status;
 
 	public Pet() {
 	}
 
 	public Pet(String category, String name, List<String> photoUrls, List<String> tags,
-			Status status) {
+			PetStatus status) {
 		this(null, category, name, photoUrls, tags, status);
 	}
 
 	public Pet(String id, String category, String name, List<String> photoUrls,
-			List<String> tags, Status status) {
+			List<String> tags, PetStatus status) {
 		this.id = id;
 		this.category = category;
 		this.name = name;
@@ -34,10 +34,6 @@ public class Pet {
 
 	public String getId() {
 		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	public String getCategory() {
@@ -72,11 +68,11 @@ public class Pet {
 		this.tags = tags;
 	}
 
-	public Status getStatus() {
+	public PetStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(Status status) {
+	public void setStatus(PetStatus status) {
 		this.status = status;
 	}
 }
