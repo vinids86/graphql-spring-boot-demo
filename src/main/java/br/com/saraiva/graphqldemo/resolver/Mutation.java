@@ -72,6 +72,6 @@ public class Mutation implements GraphQLMutationResolver {
 				.withFirstName(input.getFirstName()).withLastName(input.getLastName())
 				.withEmail(input.getEmail()).withPassword(input.getPassword())
 				.withPhone(input.getPhone()).withUserStatus(input.getUserStatus())
-				.build();
+				.withOrders(input.getOrders().get()).build();
 	}
 }

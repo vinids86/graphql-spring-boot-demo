@@ -29,6 +29,7 @@ type User {
   password: String!
   phone: String
   userStatus: Int!
+  orders: [Order]
 }
 
 input UserInput {
@@ -39,6 +40,7 @@ input UserInput {
   password: String!
   phone: String
   userStatus: Int!
+  orders: [String]
 }
 
 scalar Email

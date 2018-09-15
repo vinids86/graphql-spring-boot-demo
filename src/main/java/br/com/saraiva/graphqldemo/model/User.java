@@ -1,5 +1,8 @@
 package br.com.saraiva.graphqldemo.model;
 
+import java.util.List;
+import java.util.Optional;
+
 /**
  * Created by sara on set, 2018
  */
@@ -13,6 +16,7 @@ public class User {
 	private String password;
 	private String phone;
 	private Integer userStatus;
+	private List<String> orders;
 
 	public User() {
 	}
@@ -49,6 +53,10 @@ public class User {
 		return userStatus;
 	}
 
+	public Optional<List<String>> getOrders() {
+		return Optional.ofNullable(orders);
+	}
+
 	public static final class Builder {
 		private String id;
 		private String username;
@@ -58,6 +66,7 @@ public class User {
 		private String password;
 		private String phone;
 		private Integer userStatus;
+		private List<String> orders;
 
 		private Builder() {
 		}
@@ -107,6 +116,11 @@ public class User {
 			return this;
 		}
 
+		public Builder withOrders(List<String> orders) {
+			this.orders = orders;
+			return this;
+		}
+
 		public User build() {
 			User user = new User();
 			user.id = this.id;
@@ -117,6 +131,7 @@ public class User {
 			user.firstName = this.firstName;
 			user.userStatus = this.userStatus;
 			user.email = this.email;
+			user.orders = this.orders;
 			return user;
 		}
 	}
