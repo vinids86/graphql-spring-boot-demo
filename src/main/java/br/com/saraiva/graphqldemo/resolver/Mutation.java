@@ -4,8 +4,10 @@ import com.coxautodev.graphql.tools.GraphQLMutationResolver;
 
 import br.com.saraiva.graphqldemo.model.Order;
 import br.com.saraiva.graphqldemo.model.Pet;
+import br.com.saraiva.graphqldemo.model.User;
 import br.com.saraiva.graphqldemo.repository.OrderRepository;
 import br.com.saraiva.graphqldemo.repository.PetRepository;
+import br.com.saraiva.graphqldemo.repository.UserRepository;
 
 /**
  * Created by sara on set, 2018
@@ -14,10 +16,13 @@ public class Mutation implements GraphQLMutationResolver {
 
 	private final PetRepository petRepository;
 	private final OrderRepository orderRepository;
+	private final UserRepository userRepository;
 
-	public Mutation(PetRepository petRepository, OrderRepository orderRepository) {
+	public Mutation(PetRepository petRepository, OrderRepository orderRepository,
+			UserRepository userRepository) {
 		this.petRepository = petRepository;
 		this.orderRepository = orderRepository;
+		this.userRepository = userRepository;
 	}
 
 	public Pet createPet(Pet input) {
@@ -48,5 +53,25 @@ public class Mutation implements GraphQLMutationResolver {
 	public Order createOrder(Order input) {
 		return orderRepository.save(new Order(input.getPetId(), input.getQuantity(),
 				input.getShipDate(), input.getStatus(), input.getComplete()));
+	}
+
+	public User createUser(User input) {
+		return userRepository.findUserByUsername(input.getUsername())
+				.orElseGet(() -> userRepository.save(build("", input)));
+	}
+
+	public User updateUser(String id, User input) {
+		return userRepository.findById(id)
+				.filter(user -> !userRepository.findUserByUsername(input.getUsername())
+						.isPresent())
+				.map(user -> build(id, input)).map(userRepository::save).orElse(null);
+	}
+
+	private User build(String id, User input) {
+		return User.Builder.anUser().withId(id).withUsername(input.getUsername())
+				.withFirstName(input.getFirstName()).withLastName(input.getLastName())
+				.withEmail(input.getEmail()).withPassword(input.getPassword())
+				.withPhone(input.getPhone()).withUserStatus(input.getUserStatus())
+				.build();
 	}
 }
