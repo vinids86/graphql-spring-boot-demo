@@ -1,5 +1,10 @@
 package br.com.saraiva.graphqldemo.resolver;
 
+import java.util.ArrayList;
+import java.util.function.Predicate;
+
+import org.jetbrains.annotations.NotNull;
+
 import com.coxautodev.graphql.tools.GraphQLMutationResolver;
 
 import br.com.saraiva.graphqldemo.model.Order;
@@ -51,7 +56,7 @@ public class Mutation implements GraphQLMutationResolver {
 	}
 
 	public Order createOrder(Order input) {
-		return orderRepository.save(new Order(input.getPetId(), input.getQuantity(),
+		return orderRepository.save(new Order(null, input.getQuantity(),
 				input.getShipDate(), input.getStatus(), input.getComplete()));
 	}
 
@@ -61,10 +66,14 @@ public class Mutation implements GraphQLMutationResolver {
 	}
 
 	public User updateUser(String id, User input) {
-		return userRepository.findById(id)
-				.filter(user -> !userRepository.findUserByUsername(input.getUsername())
-						.isPresent())
+		return userRepository.findById(id).filter(usernameChangeAndDoesntExists(input))
 				.map(user -> build(id, input)).map(userRepository::save).orElse(null);
+	}
+
+	@NotNull
+	private Predicate<User> usernameChangeAndDoesntExists(User input) {
+		return user -> input.getUsername().equals(user.getUsername())
+				|| !userRepository.findUserByUsername(input.getUsername()).isPresent();
 	}
 
 	private User build(String id, User input) {
@@ -72,6 +81,6 @@ public class Mutation implements GraphQLMutationResolver {
 				.withFirstName(input.getFirstName()).withLastName(input.getLastName())
 				.withEmail(input.getEmail()).withPassword(input.getPassword())
 				.withPhone(input.getPhone()).withUserStatus(input.getUserStatus())
-				.withOrders(input.getOrders().get()).build();
+				.withOrders(input.getOrders().orElseGet(ArrayList::new)).build();
 	}
 }
