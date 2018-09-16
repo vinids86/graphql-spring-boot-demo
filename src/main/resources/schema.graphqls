@@ -29,7 +29,7 @@ type User {
   password: String!
   phone: String
   userStatus: Int!
-  orders: [Order]
+  orders(last: Int): [Order]
 }
 
 input UserInput {
